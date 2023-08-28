@@ -1,0 +1,80 @@
+{% extends 'admin/base.html' %} 
+{% load static %}
+{% block content %}
+
+	<div class="main-container">
+		<div class="xs-pd-20-10 pd-ltr-20">
+			<!--image box-->
+				<div class="pd-20 card-box mb-30">
+					<div class="clearfix mb-20">
+						<div class="pull-left">
+							<h4 class="text-blue h4">Image</h4>
+						</div>
+					</div>
+					<form class="dropzone" action="#" id="my-awesome-dropzone">
+						<div class="fallback">
+							<input type="file" name="file" />
+						</div>
+					</form>
+				</div>
+			</div>
+           <!--textarea-->
+			<div class="html-editor pd-20 card-box mb-30">
+				<h4 class="h4 text-blue">Text</h4>
+				<p>Write something about post</p>
+				<textarea class="textarea_editor form-control border-radius-0" placeholder="Enter text ..."></textarea>
+			</div>
+        <!--information-->
+		<div class="pd-20 card-box mb-30">
+			<div class="wizard-content">
+				<form class="tab-wizard wizard-circle wizard vertical">
+					<h5>Information</h5>
+					<section>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Category:</label>
+									<select class="custom-select form-control">
+										<option value="">Select Category</option>
+										<option value="Amsterdam">India</option>
+										<option value="Berlin">UK</option>
+										<option value="Frankfurt">US</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label >Title:</label>
+									<input type="text" class="form-control">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Users:</label>
+									<select class="custom-select form-control">
+										<option value="">Select User</option>
+										<option value="Amsterdam">India</option>
+										<option value="Berlin">UK</option>
+										<option value="Frankfurt">US</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-3">
+								<div class="form-group">
+									<label >Date :</label>
+									<input type="text" class="form-control date-picker" placeholder="Select Date">
+								</div>
+							</div>
+						</div>
+					</section>
+					
+				</form>
+			</div>
+		</div>
+
+
+		</div>
+	</div>
+{% endblock content %}
