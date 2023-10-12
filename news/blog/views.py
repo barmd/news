@@ -2,13 +2,15 @@ from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView,DetailView
-from blog.models import Post, HitCount, SideBar
+from django.views.generic import TemplateView
+from blog.forms import ContactForm
+from blog.models import Post, HitCount, Category
+from django.http import HttpResponse
 
 ###HOME
 
 def home(request):
-    posts = Post.objects.all().order_by('-date')[3:]
-    sidebar = Post.objects.all().order_by('-date')[6:8]
+    posts = Post.objects.all().order_by('-date')[3:15]
     top_post = Post.objects.all().order_by('-date')[:1]
     top_post_two = Post.objects.all().order_by('-date')[1:2]
     top_post_three = Post.objects.all().order_by('-date')[2:3]
@@ -17,13 +19,54 @@ def home(request):
         'top_post_two': top_post_two,
         'top_post_three': top_post_three,
         "top_post": top_post,
-        "sidebar": sidebar
     }
 
     return render(request, 'home.html', context)
 
 
-####POSTLIST
+#####ContactPageviews
+class ContactPageView(TemplateView):
+    template_name = 'blog/contact.html'
+
+    # def get(self, request, *args, **kwargs):
+    #     form = ContactForm()
+    #     form.save()
+    #     context = {
+    #         'form': form
+    #     }
+
+    #     return render(request, 'blog/contact.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = ContactForm(request.POST)
+        if request.method == 'POST' and form.is_valid():
+            form.save()
+            return HttpResponse("<h2> Bog'langaniz uchun tasahkkur!")
+
+        context = {
+            'form': form
+        }
+
+        return render(request, 'blog/contact.html', context)
+
+
+
+
+###author
+def author(request):
+    return render(request, 'blog/author.html')
+
+###the last post
+def TheLastpost(request):
+    postes = Post.objects.all().order_by('-date')[:15]
+    context = {
+        "last_post": postes,
+    }
+
+    return render(request, 'blog/theLastpost.html', context)
+
+
+###Post list
 
 class PostListView(ListView):
     model = Post
@@ -32,12 +75,6 @@ class PostListView(ListView):
     def get_queryset(self):
         return Post.objects.select_related('category').filter(category__slug=self.kwargs.get("slug"))
 
-####SIDEBAR
-
-def sidebar_details(request, id):
-    sidebar = get_object_or_404(SideBar, id=id)
-    return render(request, 'blog/sideBar_detail.html', {"sidebar": sidebar})
-    
 
 ####POSTDETAIL
 def post_details(request, id):

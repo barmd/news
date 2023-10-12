@@ -19,7 +19,6 @@ class User(models.Model):
         return self.name
 
 
-
 class Category(MPTTModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
@@ -46,7 +45,12 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='articles/')
     text = models.TextField()
-    # order = models.IntegerField(null=True)
+
+    # tag = models.ForeignKey(
+    #     Tag,    
+    #     on_delete=models.SET_NULL,
+    #     null =True
+    # )
 
     category = models.ForeignKey(
         Category,
@@ -75,31 +79,29 @@ class HitCount(models.Model):
     ip = models.CharField(max_length=30)
     date = models.DateField(("Date"), auto_now_add=True)
 
-         
-class SideBar(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100, null=False)
-    video = models.FileField(upload_to='articles/')
-    text = models.TextField()
-    category = models.ForeignKey(
-        Category, 
-        related_name="posts",
-        on_delete=models.SET_NULL,
-        null=True
-        )
+class Comment(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=200)
+    site = models.TextField(max_length=200)
+    text = models.TextField(max_length=800)
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
     date = models.DateField(auto_now_add=False)
-    
+
     def __str__(self):
-        return self.title
-    
+        return self.name
+
+class Link(models.Model):
+    name = models.CharField(max_length=100)
+    url = models.TextField(max_length=400)
+    date = models.DateField(auto_now_add=True)
+
+
 
 class ArticlesList(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    date = models.DateField(("Date"), auto_now_add=True)
-
-
-class UsersView(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     date = models.DateField(("Date"), auto_now_add=True)
 
@@ -110,6 +112,8 @@ class Contact(models.Model):
     phone = models.TextField(max_length=50)
     subject = models.TextField(max_length=250)
     message = models.TextField()
+    date = models.DateField(("Date"), auto_now_add=True)
+
 
 
     def __str__(self):

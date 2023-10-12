@@ -1,0 +1,57 @@
+{% extends 'base.html' %} 
+    {% block content %}
+
+        <div class="page-title lb single-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <h2><i class="fa fa-envelope-open-o bg-orange"></i> Biz bilan bog'laning <small class="hidden-xs-down hidden-sm-down">Agarda sizga yordam bera olsak hursan bulamiz!! </small></h2>
+                    </div><!-- end col -->
+                    <div class="col-lg-4 col-md-4 col-sm-12 hidden-xs-down hidden-sm-down">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="breadcrumb-item active">Contact</li>
+                        </ol>
+                    </div><!-- end col -->                    
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </div><!-- end page-title -->
+
+        <section class="section wb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="page-wrapper">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <h4>Biz haqimizda:</h4>
+                                    <p>Bir O'zbekistondagi birinchi raqamli yangiliklarni yetkazuvchi. Ishonchli sayt hisoblanamiz.Saytdagi har qanday malumot ishonchli dalillarga asoslangan.</p>
+                   
+                                    <h4>Qanday yordam bera olamiz</h4>
+                                    <p>Sizga qanday yordam bera olamiz.Saytdagi har qanday muammolar yoki malumotlar uchun javob berishga tayyormiz.</p>
+             
+                                    <h4>Savollar bormi?</h4>
+                                    <p>Savollaringuz bormi har qanday savol, muammo yoki takliflar uchun  bizga o'z malumotlaringizni qoldirin siz bilan albatta bog'lanamiz. </p>
+                                </div>
+                                <div class="col-lg-7">
+                                    <form class="form-wrapper" method="post">
+                                        {% csrf_token %}
+                                        <input type="text" class="form-control" placeholder="Your name" name="name">
+                                        <input type="text" class="form-control" placeholder="Email address" name="email">
+                                        <input type="text" class="form-control" placeholder="Phone" name="phone">
+                                        <input type="text" class="form-control" placeholder="Subject" name="subject">
+                                        <textarea class="form-control" placeholder="Your message" name="message"></textarea>
+                                        <button type="submit" class="btn btn-primary">Send <i class="fa fa-envelope-open-o"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div><!-- end page-wrapper -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </section>
+        <div class="dmtop">Scroll to Top</div>
+    </div><!-- end wrapper -->
+    {% endblock content  %}  
+
+    

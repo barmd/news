@@ -2,9 +2,56 @@
 
 {% block content %}
     <div id="wrapper">
+        <div class="page-title lb single-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <h2><i class="fa bg-orange"></i> The lastest posts <small class="hidden-xs-down hidden-sm-down">Nulla felis eros, varius sit amet volutpat non. </small></h2>
+                    </div><!-- end col -->
+                    <div class="col-lg-4 col-md-4 col-sm-12 hidden-xs-down hidden-sm-down">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Blog</a></li>
+                            <li class="breadcrumb-item active">Videos</li>
+                        </ol>
+                    </div><!-- end col -->                    
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </div><!-- end page-title -->
         <section class="section">
             <div class="container">
                 <div class="row">
+                    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                        <div class="page-wrapper">
+                            <div class="blog-top clearfix">
+                                <h4 class="pull-left">Recent News <a href="#"><i class="fa fa-rss"></i></a></h4>
+                            </div><!-- end blog-top -->
+                            {% for post in last_post %}
+                            <div class="blog-list clearfix">
+                                <div class="blog-box row">
+                                    <div class="col-md-4">
+                                        <div class="post-media">
+                                            <a href="{% url 'post_single' post.id %}" title="">
+                                                <img src="{{ post.image.url }}" alt="" class="img-fluid">
+                                                <div class="hovereffect"></div>
+                                            </a>
+                                        </div><!-- end media -->
+                                    </div><!-- end col -->
+                                    <div class="blog-meta big-meta col-md-8">
+                                        <h4><a href="{% url 'post_single' post.id %}" title="">{{post.title}}</a></h4>
+                                        <p>{{ post.text|slice:200 }}</p>
+                                        <small class="firstsmall"><a class="bg-orange" href="tech-category-01.html" title="">{{post.category}}</a></small>
+                                        <small><a href="tech-single.html" title="">{{ post.date }}</a></small>
+                                        <small><a href="tech-author.html" title="">by {{post.user}}</a></small>
+                                        <small><a href="tech-single.html" title=""><i class="fa fa-eye"></i>{{post.hit_count}}</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end blog-box -->
+                            </div>
+                            {% endfor %}
+                        </div><!-- end col -->
+                    </div>
+                    
+
                     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                         <div class="sidebar">
                             <div class="widget">
@@ -18,51 +65,23 @@
                             <div class="widget">
                                 <h2 class="widget-title">Trend Videos</h2>
                                 <div class="trend-videos">
+                                    {% for s in sidebar %}
                                     <div class="blog-box">
                                         <div class="post-media">
-                                            <a href="tech-single.html" title="">
-                                                <img src="upload/tech_video_01.jpg" alt="" class="img-fluid">
+                                            <a href="{% url 'post_single' s.id %}" title="">
+                                                <img src="{{s.image.url}}" alt="" class="img-fluid">
                                                 <div class="hovereffect">
                                                     <span class="videohover"></span>
                                                 </div><!-- end hover -->
                                             </a>
                                         </div><!-- end media -->
                                         <div class="blog-meta">
-                                            <h4><a href="tech-single.html" title="">We prepared the best 10 laptop presentations for you</a></h4>
+                                            <h4><a href="{% url 'post_single' s.id %}" title="">{{s.title}}</a></h4>
                                         </div><!-- end meta -->
                                     </div><!-- end blog-box -->
 
                                     <hr class="invis">
-
-                                    <div class="blog-box">
-                                        <div class="post-media">
-                                            <a href="tech-single.html" title="">
-                                                <img src="upload/tech_video_02.jpg" alt="" class="img-fluid">
-                                                <div class="hovereffect">
-                                                    <span class="videohover"></span>
-                                                </div><!-- end hover -->
-                                            </a>
-                                        </div><!-- end media -->
-                                        <div class="blog-meta">
-                                            <h4><a href="tech-single.html" title="">We are guests of ABC Design Studio - Vlog</a></h4>
-                                        </div><!-- end meta -->
-                                    </div><!-- end blog-box -->
-
-                                    <hr class="invis">
-
-                                    <div class="blog-box">
-                                        <div class="post-media">
-                                            <a href="tech-single.html" title="">
-                                                <img src="upload/tech_video_03.jpg" alt="" class="img-fluid">
-                                                <div class="hovereffect">
-                                                    <span class="videohover"></span>
-                                                </div><!-- end hover -->
-                                            </a>
-                                        </div><!-- end media -->
-                                        <div class="blog-meta">
-                                            <h4><a href="tech-single.html" title="">Both blood pressure monitor and intelligent clock</a></h4>
-                                        </div><!-- end meta -->
-                                    </div><!-- end blog-box -->
+                                    {% endfor %}
                                 </div><!-- end videos -->
                             </div><!-- end widget -->
 
@@ -183,66 +202,14 @@
                             <div class="widget">
                                 <div class="banner-spot clearfix">
                                     <div class="banner-img">
-                                        <img src="upload/banner_03.jpg" alt="" class="img-fluid">
-                                    </div><!-- end banner-img -->
                                 </div><!-- end banner -->
                             </div><!-- end widget -->
                         </div><!-- end sidebar -->
                     </div><!-- end col -->
-                    
-                    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                        <div class="page-wrapper">
-                            <div class="blog-grid-system">
-                                <div class="row">
-                                    {% for post in post_list %}
-                                    <div class="col-md-6">
-                                        <div class="blog-box">
-                                            <div class="post-media">
-                                                <a href="{% url 'post_single' post.id %}" title="">
-                                                    <img src="{{ post.image.url }}" alt="" class="img-fluid" style="height: 350px; width: 450px;">
-                                                    <div class="hovereffect">
-                                                    </div><!-- end hover -->
-                                                </a>
-                                            </div><!-- end media -->
-                                            <div class="blog-meta big-meta">
-                                                <span class="color-orange"><a href="tech-category-01.html" title="">{{post.category}}</a></span>
-                                                <h4><a href="{% url 'post_single' post.id %}" title="">{{post.title}}</a></h4>
-
-                                                <p>{{ post.text|slice:200 }}</p>
-                                                <small><a href="tech-single.html" title="">{{ post.date }}</a></small>
-                                                <small><a href="tech-author.html" title="">by {{post.user}}</a></small>
-                                                <small><a href="tech-single.html" title=""><i class="fa fa-eye"></i> {{post.hit_count}}</a></small>
-                                            </div><!-- end meta -->
-                                        </div><!-- end blog-box -->
-                                    </div><!-- end col -->
-                                     {% endfor %}
-                                </div><!-- end row -->
-                            </div><!-- end blog-grid-system -->
-                        </div><!-- end page-wrapper -->
-
-                        <hr class="invis3">
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination justify-content-start">
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div><!-- end col -->
-                        </div><!-- end row -->
-                    </div><!-- end col -->
                 </div><!-- end row -->
             </div><!-- end container -->
         </section>
-
-        
         <div class="dmtop">Scroll to Top</div>  
     </div><!-- end wrapper -->
-{% endblock content  %}
-</body>
+    {% endblock content  %}
+  
