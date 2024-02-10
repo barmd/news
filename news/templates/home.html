@@ -11,9 +11,9 @@
                              <div class="shadoweffect">
                                 <div class="shadow-desc">
                                     <div class="blog-meta">
-                                        <span class="bg-orange"><a href="" title="">{{ a.category }}</a></span>
+                                        <span class="bg-orange"><a href="{% url 'post_list' a.category.slug %}" title="">{{ a.category }}</a></span>
                                         <h4><a href="{% url 'post_single' a.id %}" title="">{{ a.title }}</a></h4>
-                                        <small><a href="tech-single.html" title="">{{ a.date | date:'d.m.Y' }}-yil | {{ a.date | date:"" }}</a></small>
+                                        <small><a href="tech-single.html" title="">{{ a.date | date:'d.m.Y' }} </a></small>
                                         <small><a href="tech-author.html" title="">by {{ a.user }}</a></small>
                                     </div><!-- end meta -->
                                 </div><!-- end shadow-desc -->
@@ -29,9 +29,9 @@
                              <div class="shadoweffect">
                                 <div class="shadow-desc">
                                     <div class="blog-meta">
-                                        <span class="bg-orange"><a href="tech-category-01.html" title="">{{ a.category }}</a></span>
+                                        <span class="bg-orange"><a href="{% url 'post_list' a.category.slug %}" title="">{{ a.category }}</a></span>
                                         <h4><a href="{% url 'post_single' a.id %}" title="">{{ a.title }}</a></h4>
-                                        <small><a href="tech-single.html" title="">{{ a.date }}</a></small>
+                                        <small><a href="tech-single.html" title="">{{ a.date | date:'d.m.Y' }}</a></small>
                                         <small><a href="tech-author.html" title="">by {{ a.user }}</a></small>
                                     </div><!-- end meta -->
                                 </div><!-- end shadow-desc -->
@@ -47,9 +47,9 @@
                              <div class="shadoweffect">
                                 <div class="shadow-desc">
                                     <div class="blog-meta">
-                                        <span class="bg-orange"><a href="tech-category-01.html" title="">{{ a.category }}</a></span>
+                                        <span class="bg-orange"><a href="{% url 'post_list' a.category.slug %}" title="">{{ a.category }}</a></span>
                                         <h4><a href="{% url 'post_single' a.id %}" title="">{{ a.title }}</a></h4>
-                                        <small><a href="tech-single.html" title="">{{ a.date }}</a></small>
+                                        <small><a href="tech-single.html" title="">{{ a.date | date:'d.m.Y' }}</a></small>
                                         <small><a href="tech-author.html" title="">by {{ a.user }}</a></small>
                                     </div><!-- end meta -->
                                 </div><!-- end shadow-desc -->
@@ -84,8 +84,8 @@
                                     <div class="blog-meta big-meta col-md-8">
                                         <h4><a href="{% url 'post_single' post.id %}" title="">{{post.title}}</a></h4>
                                         <p>{{ post.text|slice:200 }}</p>
-                                        <small class="firstsmall"><a class="bg-orange" href="tech-category-01.html" title="">{{post.category}}</a></small>
-                                        <small><a href="tech-single.html" title="">{{ post.date }}</a></small>
+                                        <small class="firstsmall"><a class="bg-orange" href="{% url 'post_list' post.category.slug %}" title="">{{post.category}}</a></small>
+                                        <small><a href="tech-single.html" title="">{{ post.date | date:'d.m.Y' }}</a></small>
                                         <small><a href="tech-author.html" title="">by {{post.user}}</a></small>
                                         <small><a href="tech-single.html" title=""><i class="fa fa-eye"></i>{{post.hit_count}}</a></small>
                                     </div><!-- end meta -->
@@ -115,7 +115,6 @@
                                             <a href="{% url 'post_single' s.id %}" title="">
                                                 <img src="{{s.image.url}}" alt="" class="img-fluid">
                                                 <div class="hovereffect">
-                                                    <span class="videohover"></span>
                                                 </div><!-- end hover -->
                                             </a>
                                         </div><!-- end media -->
@@ -133,29 +132,15 @@
                                 <h2 class="widget-title">Popular Posts</h2>
                                 <div class="blog-list-widget">
                                     <div class="list-group">
-                                        <a href="tech-single.html" class="list-group-item list-group-item-action flex-column align-items-start">
+                                        {% for m in most_view %}
+                                        <a href="{% url 'post_single' m.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
                                             <div class="w-100 justify-content-between">
-                                                <img src="upload/tech_blog_08.jpg" alt="" class="img-fluid float-left">
-                                                <h5 class="mb-1">5 Beautiful buildings you need..</h5>
-                                                <small>12 Jan, 2016</small>
+                                                <img src="{{ m.image.url }}" alt="" class="img-fluid float-left">
+                                                <h5 class="mb-1">{{ m.title }}</h5>
+                                                <small>{{ m.date | date:'d.m.Y' }}</small>
                                             </div>
                                         </a>
-
-                                        <a href="tech-single.html" class="list-group-item list-group-item-action flex-column align-items-start">
-                                            <div class="w-100 justify-content-between">
-                                                <img src="upload/tech_blog_01.jpg" alt="" class="img-fluid float-left">
-                                                <h5 class="mb-1">Let's make an introduction for..</h5>
-                                                <small>11 Jan, 2016</small>
-                                            </div>
-                                        </a>
-
-                                        <a href="tech-single.html" class="list-group-item list-group-item-action flex-column align-items-start">
-                                            <div class="w-100 last-item justify-content-between">
-                                                <img src="upload/tech_blog_03.jpg" alt="" class="img-fluid float-left">
-                                                <h5 class="mb-1">Did you see the most beautiful..</h5>
-                                                <small>07 Jan, 2016</small>
-                                            </div>
-                                        </a>
+                                        {% endfor %}
                                     </div>
                                 </div><!-- end blog-list -->
                             </div><!-- end widget -->
@@ -164,10 +149,11 @@
                                 <h2 class="widget-title">Recent Reviews</h2>
                                 <div class="blog-list-widget">
                                     <div class="list-group">
-                                        <a href="tech-single.html" class="list-group-item list-group-item-action flex-column align-items-start">
+                                        {% for p in recent_post %}
+                                        <a href="{% url 'post_single' p.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
                                             <div class="w-100 justify-content-between">
-                                                <img src="upload/tech_blog_02.jpg" alt="" class="img-fluid float-left">
-                                                <h5 class="mb-1">Banana-chip chocolate cake recipe..</h5>
+                                                <img src="{{p.image.url}}" alt="" class="img-fluid float-left">
+                                                <h5 class="mb-1">{{ p.title }}</h5>
                                                 <span class="rating">
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
@@ -177,34 +163,7 @@
                                                 </span>
                                             </div>
                                         </a>
-
-                                        <a href="tech-single.html" class="list-group-item list-group-item-action flex-column align-items-start">
-                                            <div class="w-100 justify-content-between">
-                                                <img src="upload/tech_blog_03.jpg" alt="" class="img-fluid float-left">
-                                                <h5 class="mb-1">10 practical ways to choose organic..</h5>
-                                                <span class="rating">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </span>
-                                            </div>
-                                        </a>
-
-                                        <a href="tech-single.html" class="list-group-item list-group-item-action flex-column align-items-start">
-                                            <div class="w-100 last-item justify-content-between">
-                                                <img src="upload/tech_blog_07.jpg" alt="" class="img-fluid float-left">
-                                                <h5 class="mb-1">We are making homemade ravioli..</h5>
-                                                <span class="rating">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </span>
-                                            </div>
-                                        </a>
+                                        {% endfor %}
                                     </div>
                                 </div><!-- end blog-list -->
                             </div><!-- end widget -->

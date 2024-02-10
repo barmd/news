@@ -30,10 +30,8 @@ a:focus,
 .dmtop,
 .search-form .btn:hover,
 .search-form .btn:focus,
-.search-form .btn {
-    color: #ffffff !important;
-    background-color: #3197d6 !important;
-}
+.search-form .btn 
+
 
 .tag-cloud-single span,
 .page-title i,

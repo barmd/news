@@ -6,15 +6,18 @@ from django.views.generic import TemplateView
 from blog.forms import ContactForm
 from blog.models import Post, HitCount, Category
 from django.http import HttpResponse
+from django.db.models import Count
 
 ###HOME
 
 def home(request):
-    posts = Post.objects.all().order_by('-date')[3:15]
+    #most_viewed_posts = Post.objects.annotate(hit_count=Count('hitcount')).order_by('-hit_count')[:3]
+    posts = Post.objects.all().order_by('date')[3:15]
     top_post = Post.objects.all().order_by('-date')[:1]
     top_post_two = Post.objects.all().order_by('-date')[1:2]
     top_post_three = Post.objects.all().order_by('-date')[2:3]
     context = {
+        #'most_view': most_viewed_posts,
         "post_list": posts,
         'top_post_two': top_post_two,
         'top_post_three': top_post_three,
@@ -27,16 +30,6 @@ def home(request):
 #####ContactPageviews
 class ContactPageView(TemplateView):
     template_name = 'blog/contact.html'
-
-    # def get(self, request, *args, **kwargs):
-    #     form = ContactForm()
-    #     form.save()
-    #     context = {
-    #         'form': form
-    #     }
-
-    #     return render(request, 'blog/contact.html', context)
-
     def post(self, request, *args, **kwargs):
         form = ContactForm(request.POST)
         if request.method == 'POST' and form.is_valid():
@@ -69,11 +62,18 @@ def TheLastpost(request):
 ###Post list
 
 class PostListView(ListView):
+    posts = Post.objects.all().order_by('date')[3:15]
+    context = {
+        "post_list": posts,
+    }
+
     model = Post
 
 
     def get_queryset(self):
         return Post.objects.select_related('category').filter(category__slug=self.kwargs.get("slug"))
+    
+    
 
 
 ####POSTDETAIL

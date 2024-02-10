@@ -2,25 +2,14 @@ from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from datetime import datetime, date
 from django.urls import reverse
-
-
-
-class User(models.Model):
-    name = models.CharField(max_length=100)
-    full_name = models.CharField(max_length=100)
-    password = models.TextField(max_length=50)
-    notes = models.TextField(max_length=50)
-    email = models.EmailField(max_length=100)
-    phone = models.CharField(max_length=50)
-    date = models.DateField(("Date"), auto_now_add=True)
-
-
-    def __str__(self):
-        return self.name
-
+from django.contrib.auth.models import User
 
 class Category(MPTTModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.
+        CASCADE
+        )
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
     notes = models.TextField(max_length=250)
@@ -39,19 +28,27 @@ class Category(MPTTModel):
     def __str__(self):
         return self.name    
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+    date = models.DateField(("Date"), auto_now_add=True)
+
+    def __str__(self):
+        return self.name    
 
 class Post(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.
+        CASCADE
+        )
     title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='articles/')
     text = models.TextField()
-
-    # tag = models.ForeignKey(
-    #     Tag,    
-    #     on_delete=models.SET_NULL,
-    #     null =True
-    # )
-
+    tag = models.ManyToManyField(
+        Tag,
+        verbose_name='Bir nechat avriantni tanlang: ',
+        blank=False,
+    )
     category = models.ForeignKey(
         Category,
         related_name="post",
@@ -69,7 +66,7 @@ class Post(models.Model):
     
     slug = models.SlugField(max_length=200)
     
-    @property
+    
     def hit_count(self):
         return HitCount.objects.filter(post_id=self.id).count()
 
@@ -79,21 +76,44 @@ class HitCount(models.Model):
     ip = models.CharField(max_length=30)
     date = models.DateField(("Date"), auto_now_add=True)
 
+
 class Comment(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=200)
     site = models.TextField(max_length=200)
     text = models.TextField(max_length=800)
 
+    def __str__(self):
+        return self.name
 
-class Tag(models.Model):
+class Color(models.Model):
     name = models.CharField(max_length=50)
-    date = models.DateField(auto_now_add=False)
+    style = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
 
+class Icon(models.Model):
+    name = models.CharField(max_length=50)
+    style = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.name
+
+
 class Link(models.Model):
+    color = models.ForeignKey(
+        Color,
+        verbose_name='Rang tanlang: ',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    icon = models.ForeignKey(
+        Icon,
+        verbose_name='Ikonka tanlang: ',
+        on_delete=models.SET_NULL,
+        null=True
+    )
     name = models.CharField(max_length=100)
     url = models.TextField(max_length=400)
     date = models.DateField(auto_now_add=True)
@@ -119,4 +139,3 @@ class Contact(models.Model):
     def __str__(self):
         return self.name
  
-

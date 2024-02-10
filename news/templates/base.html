@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{% load i18n %}
 
 <!-- Basic -->
 <meta charset="utf-8">
@@ -10,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <!-- Site Metas -->
-<title>Tech Blog - Stylish Magazine Blog Template</title>
+<title>uznews</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -59,7 +60,13 @@
                                         <div class="container">
                                             <div class="mega-menu-content clearfix">
                                                 <div class="tab">
-                                                    <button class="tablinks active"
+                                                    {% for i in category %}
+                                                    <button class="tablinks"
+                                                        onclick="openCategory(event, 'cat01')">{{ i.name }}</button>
+                                                    {% endfor %}
+
+
+                                                    <!-- <button class="tablinks active"
                                                         onclick="openCategory(event, 'cat01')">Science</button>
                                                     <button class="tablinks"
                                                         onclick="openCategory(event, 'cat02')">Technology</button>
@@ -68,7 +75,7 @@
                                                     <button class="tablinks" onclick="openCategory(event, 'cat04')">Car
                                                         News</button>
                                                     <button class="tablinks"
-                                                        onclick="openCategory(event, 'cat05')">Worldwide</button>
+                                                        onclick="openCategory(event, 'cat05')">Worldwide</button> -->
                                                 </div>
 
                                                 <div class="tab-details clearfix">
@@ -472,9 +479,6 @@
                                 <a class="nav-link" href="{% url 'theLastpost' %}">The lasts news</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'author' %}">Authors</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
                             </li>
                         </ul>
@@ -508,16 +512,11 @@
                                     class="img-fluid"></a>
                             <p>Tech Blog is a technology blog, we sharing marketing, news and gadget articles.</p>
                             <div class="social">
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i
-                                        class="fa fa-facebook"></i></a>
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i
-                                        class="fa fa-twitter"></i></a>
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="Instagram"><i
-                                        class="fa fa-instagram"></i></a>
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="Google Plus"><i
-                                        class="fa fa-google-plus"></i></a>
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><i
-                                        class="fa fa-pinterest"></i></a>
+                                {% for a in linkInst.all %}
+                                <a href="{{a.url}}" data-toggle="tooltip" data-placement="bottom"><i
+                                        class="fa {{a.icon.style}}"></i></a>
+                                
+                                {% endfor %}
                             </div>
 
                             <hr class="invis">
@@ -538,7 +537,7 @@
                         <div class="link-widget">
                             {% for s in category %}
                             <ul>
-                                <li><a href="#">{{s.name}} <span>(21)</span></a></li>
+                                <li><a href="{% url 'post_list' s.slug %}">{{s.name}} <span>(21)</span></a></li>
 
                             </ul>
                             {% endfor %}
@@ -562,12 +561,7 @@
                 </div><!-- end col -->
             </div>
 
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <br>
-                    <div class="copyright">&copy; Tech Blog. Design: <a href="http://html.design">HTML Design</a>.</div>
-                </div>
-            </div>
+          
         </div><!-- end container -->
     </footer>
 

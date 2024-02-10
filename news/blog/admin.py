@@ -1,6 +1,6 @@
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
-from blog.models import Post, Category, User, Contact, Link
+from blog.models import Post, Category, Contact, Link, Tag , Icon, Color
 from django.utils.html import format_html
 
 
@@ -19,12 +19,6 @@ class NewsAdmin(admin.ModelAdmin):
     list_display_links = ['id', 'name'] 
 
 
-@admin.register(User)
-class NewsAdmin(admin.ModelAdmin):
-    list_display = ['id','name']
-    list_display_links = ['id', 'name'] 
-
-
 @admin.register(Contact)
 class NewsAdmin(admin.ModelAdmin):
     list_display = ['id','name']
@@ -35,3 +29,20 @@ class NewsAdmin(admin.ModelAdmin):
 class NewsAdmin(admin.ModelAdmin):
     list_display = ['name','url']
     list_display_links = [ 'name','url']
+
+
+@admin.register(Tag)
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    list_display_links = [ 'name']    
+
+
+@admin.register(Icon)
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    list_display_links = [ 'name']    
+
+@admin.register(Color)
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    list_display_links = [ 'name']  
