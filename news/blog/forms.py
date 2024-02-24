@@ -12,3 +12,6 @@ class ContactForm(forms.ModelForm):
             'subject',
             'message',
         ]
+
+class PostSearchForm(forms.Form):
+    search_query = forms.CharField(max_length=100, required=False)

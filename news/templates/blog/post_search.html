@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if posts %}
+{% for post in posts %}
+<div class="blog-list clearfix" style="margin-top: 100px; margin-bottom: 100px; margin-left: 50px;margin-right:500px;">
+    <div class="blog-box row">
+        <div class="col-md-4">
+            <div class="post-media">
+                <a href="{% url 'post_single' post.id %}" title="">
+                    <img src="{{ post.image.url }}" alt="" class="img-fluid" style="height: 200px; width: 300px;">
+                    <div class="hovereffect"></div>
+                </a>
+            </div><!-- end media -->
+        </div><!-- end col -->
+        <div class="blog-meta big-meta col-md-8">
+            <h4><a href="{% url 'post_single' post.id %}" title="">{{post.title}}</a></h4>
+            <p>{{ post.text|slice:200 }}</p>
+            <small class="firstsmall"><a class="bg-orange" href="{% url 'post_list' post.category.slug %}" title="">{{post.category}}</a></small>
+            <small><a href="tech-single.html" title="">{{ post.date | date:'d.m.Y' }}</a></small>
+            <small><a href="tech-author.html" title="">by {{post.user}}</a></small>
+            <small><a href="tech-single.html" title=""><i class="fa fa-eye"></i>{{post.hit_count}}</a></small>
+        </div><!-- end meta -->
+    </div><!-- end blog-box -->
+</div>
+{% endfor %}
+
+
+{% else %}
+<h2 style="margin-top:200px; margin-left:500px; margin-bottom:150px; color: crimson;">No matching posts found.</h2>
+{% endif %}
+
+{% endblock content  %}
+

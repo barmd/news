@@ -28,7 +28,7 @@
                                 <div class="post-sharing">
                                     <ul class="list-inline">
                                         {% for a in linkInst.all %}
-                                            <li><a href="{{ a.url}}" class="btn {{a.color.style}}"><i class="fa fa-{{a.icon.style}}"></i> <span class="down-mobile">{{ a.name }}</span></a></li>
+                                            <li><a href="{{ a.url}}" class="btn " style=" background:{{a.colorcode}}; "><i class="fa fa-{{a.icon.style}}"></i> <span class="down-mobile">{{ a.name }}</span></a></li>
                                         {% endfor %}
                                     </ul>       
                                 </div><!-- end post-sharing -->
@@ -174,33 +174,15 @@
                                 <h2 class="widget-title">Follow Us</h2>
 
                                 <div class="row text-center">
+                                    {% for a in linkInst.all %}
                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                                        <a href="#" class="social-button facebook-button">
-                                            <i class="fa fa-facebook"></i>
+                                        <a href="{{a.url}}" class="social-button facebook-button"style="background: {{a.colorcode}};">
+                                            <i class="fa {{a.icon.style}}"></i>
                                             <p>27k</p>
                                         </a>
                                     </div>
-
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                                        <a href="#" class="social-button twitter-button">
-                                            <i class="fa fa-twitter"></i>
-                                            <p>98k</p>
-                                        </a>
-                                    </div>
-
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                                        <a href="#" class="social-button google-button">
-                                            <i class="fa fa-google-plus"></i>
-                                            <p>17k</p>
-                                        </a>
-                                    </div>
-
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                                        <a href="#" class="social-button youtube-button">
-                                            <i class="fa fa-youtube"></i>
-                                            <p>22k</p>
-                                        </a>
-                                    </div>
+                                     {% endfor %}
+                                    
                                 </div>
                             </div><!-- end widget -->
                             <div class="widget">

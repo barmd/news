@@ -1,15 +1,15 @@
 from blog.models import Category, Link,Post , HitCount
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
+from django.views import View
 
 
 def get_category_context(request):
-    category = Category.objects.order_by('-date')[:5]
+    categories = Category.objects.annotate(post_count=Count('post')).order_by('-date')[:5]
     context = {
-        'category': category,
+        'categories': categories,
     }
     return context
-
 
 def get_link_context(request):
     linkInst = Link.objects.all().order_by('-date')

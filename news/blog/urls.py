@@ -1,5 +1,6 @@
 from django.urls import path
-from . import views
+from . import views , context
+from .views import post_search
 
 urlpatterns = [
     #--------------Posts
@@ -9,6 +10,7 @@ urlpatterns = [
     path('contact/', views.ContactPageView.as_view(), name = "contact"),
     path('author/', views.author, name = "author"),
     path('lastpost/', views.TheLastpost, name = "theLastpost"),
+    path('post-search/', post_search, name='post_search'),
 
 
 

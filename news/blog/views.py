@@ -4,20 +4,22 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView,DetailView
 from django.views.generic import TemplateView
 from blog.forms import ContactForm
-from blog.models import Post, HitCount, Category
+from blog.models import Post, HitCount
 from django.http import HttpResponse
-from django.db.models import Count
+from .forms import PostSearchForm
+from django.db import models
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+
 
 ###HOME
 
 def home(request):
-    #most_viewed_posts = Post.objects.annotate(hit_count=Count('hitcount')).order_by('-hit_count')[:3]
-    posts = Post.objects.all().order_by('date')[3:15]
-    top_post = Post.objects.all().order_by('-date')[:1]
-    top_post_two = Post.objects.all().order_by('-date')[1:2]
-    top_post_three = Post.objects.all().order_by('-date')[2:3]
-    context = {
-        #'most_view': most_viewed_posts,
+    posts = Post.objects.all().order_by('-id')[3:15]
+    top_post = Post.objects.all().order_by('-id')[:1]
+    top_post_two = Post.objects.all().order_by('-id')[1:2]
+    top_post_three = Post.objects.all().order_by('-id')[2:3]
+    context = { 
         "post_list": posts,
         'top_post_two': top_post_two,
         'top_post_three': top_post_three,
@@ -51,7 +53,7 @@ def author(request):
 
 ###the last post
 def TheLastpost(request):
-    postes = Post.objects.all().order_by('-date')[:15]
+    postes = Post.objects.all().order_by('-id')[:15]
     context = {
         "last_post": postes,
     }
@@ -89,7 +91,42 @@ def post_details(request, id):
     return render(request, 'blog/post_detail.html', {"post":post})
 
 
+def post_search(request):
+    form = PostSearchForm(request.GET)
+    posts = Post.objects.all()
 
+    if form.is_valid():
+        search_query = form.cleaned_data.get('search_query')
+        if search_query:
+            posts = posts.filter(title__icontains=search_query)
 
+    context = {
+        'form': form,
+        'posts': posts,
+    }
+
+    return render(request, 'blog/post_search.html', context)
 
  
+
+def post_list(request, category=None):
+    # Get unique categories from the database
+    categories = Post.objects.values_list('category__name', flat=True).distinct()
+
+    if category:
+        posts = Post.objects.filter(category__name=category)
+    else:
+        posts = Post.objects.all()
+
+    context = {
+        'posts': posts,
+        'selected_category': category,
+        'categories': categories,
+    }
+
+    if request.is_ajax():
+        # If the request is AJAX, return the posts data as JSON
+        return JsonResponse({'html': render_to_string('posts/posts_list.html', context)})
+    else:
+        # If it's a regular request, render the template
+        return render(request, 'posts/posts_list.html', context)

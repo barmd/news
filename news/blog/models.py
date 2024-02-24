@@ -3,6 +3,9 @@ from mptt.models import MPTTModel, TreeForeignKey
 from datetime import datetime, date
 from django.urls import reverse
 from django.contrib.auth.models import User
+from colorfield.fields import ColorField
+from django.contrib.auth import get_user
+
 
 class Category(MPTTModel):
     user = models.ForeignKey(
@@ -44,6 +47,7 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='articles/')
     text = models.TextField()
+    content = models.TextField()
     tag = models.ManyToManyField(
         Tag,
         verbose_name='Bir nechat avriantni tanlang: ',
@@ -55,7 +59,7 @@ class Post(models.Model):
         on_delete=models.SET_NULL,
         null=True
     )
-    date = models.DateField(auto_now_add=False)
+    date = models.DateField(("Date"), auto_now_add=True)
 
 
     def __str__(self):
@@ -69,7 +73,18 @@ class Post(models.Model):
     
     def hit_count(self):
         return HitCount.objects.filter(post_id=self.id).count()
+    
+    def save(self, *args, **kwargs):
+        # If the user is not set, set it to the current user
+        if not self.user_id:
+            # Assuming you are using this code within a view where `request` is available
+            user = getattr(self, 'user', None)
+            if user is None:
+                raise ValueError("User must be set before saving the Post.")
+            
+            self.user = user
 
+        super().save(*args, **kwargs)
 
 class HitCount(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -86,13 +101,6 @@ class Comment(models.Model):
     def __str__(self):
         return self.name
 
-class Color(models.Model):
-    name = models.CharField(max_length=50)
-    style = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
 class Icon(models.Model):
     name = models.CharField(max_length=50)
     style = models.CharField(max_length=100)
@@ -102,12 +110,7 @@ class Icon(models.Model):
 
 
 class Link(models.Model):
-    color = models.ForeignKey(
-        Color,
-        verbose_name='Rang tanlang: ',
-        on_delete=models.SET_NULL,
-        null=True
-    )
+    colorcode = ColorField(default='#FF0000')
     icon = models.ForeignKey(
         Icon,
         verbose_name='Ikonka tanlang: ',
@@ -116,7 +119,7 @@ class Link(models.Model):
     )
     name = models.CharField(max_length=100)
     url = models.TextField(max_length=400)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True, null=True, blank=True)
 
 
 

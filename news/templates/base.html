@@ -60,9 +60,9 @@
                                         <div class="container">
                                             <div class="mega-menu-content clearfix">
                                                 <div class="tab">
-                                                    {% for i in category %}
+                                                    {% for i in categories %}
                                                     <button class="tablinks"
-                                                        onclick="openCategory(event, 'cat01')">{{ i.name }}</button>
+                                                        onclick="openCategory(event, 'cat01')">{{i.name }}</button>
                                                     {% endfor %}
 
 
@@ -476,101 +476,102 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'theLastpost' %}">The lasts news</a>
+                                <a class="nav-link" href="{% url 'theLastpost' %}">The lastest news</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                                <a class="nav-link" href="{% url 'contact' %}">Contact us</a>
                             </li>
                         </ul>
                         <ul class="navbar-nav mr-2">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa fa-rss"></i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa fa-android"></i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa fa-apple"></i></a>
-                            </li>
+                            <form class="d-flex" role="search" method="get" action="{% url 'post_search' %}">
+                                <input class="form-control me-2" type="search" name="search_query" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                            <!-- {% if search_query %}
+                            <h3>Search Results for "{{ search_query }}"</h3>
+                            {% endif %}
+
+                            {% for post in posts %}
+                            <h2>{{ post.title }}</h2>
+                            <p>{{ post.content }}</p>
+                            {% endfor %} -->
                         </ul>
                     </div>
                 </nav>
             </div><!-- end container-fluid -->
         </header><!-- end market-header -->
-       
+        {% block content %}
+        {% endblock content  %}
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="widget">
+                            <div class="footer-text text-left">
+                                <a href="index.html"><img src="images/version/tech-footer-logo.png" alt=""
+                                        class="img-fluid"></a>
+                                <p></p>
+                                <div class="social">
+                                    {% for a in linkInst.all %}
+                                    <a href="{{a.url}}" data-toggle="tooltip" data-placement="bottom"><i
+                                            class="fa {{a.icon.style}}"></i></a>
 
-    {% block content %}
-    {% endblock content %}
-    
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7">
-                    <div class="widget">
-                        <div class="footer-text text-left">
-                            <a href="index.html"><img src="images/version/tech-footer-logo.png" alt=""
-                                    class="img-fluid"></a>
-                            <p>Tech Blog is a technology blog, we sharing marketing, news and gadget articles.</p>
-                            <div class="social">
-                                {% for a in linkInst.all %}
-                                <a href="{{a.url}}" data-toggle="tooltip" data-placement="bottom"><i
-                                        class="fa {{a.icon.style}}"></i></a>
-                                
+                                    {% endfor %}
+                                </div>
+
+                                <hr class="invis">
+
+                                <div class="newsletter-widget text-left">
+                                    <form class="form-inline">
+                                        <input type="text" class="form-control" placeholder="Enter your email address">
+                                        <button type="submit" class="btn btn-primary">SUBMIT</button>
+                                    </form>
+                                </div><!-- end newsletter -->
+                            </div><!-- end footer-text -->
+                        </div><!-- end widget -->
+                    </div><!-- end col -->
+
+                    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                        <div class="widget">
+                            <h2 class="widget-title">Popular Categories</h2>
+                            <div class="link-widget">
+                                {% for category in categories %}
+                                <ul>
+                                    <li>
+                                        <a href="{% url 'post_list' category.slug %}">
+                                            {{ category.name }} <span>({{ category.post_count }})</span>
+                                        </a>
+                                    </li>
+                                </ul>
                                 {% endfor %}
-                            </div>
+                            </div><!-- end link-widget -->
+                        </div><!-- end widget -->
+                    </div><!-- end col -->
 
-                            <hr class="invis">
+                    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                        <div class="widget">
+                            <h2 class="widget-title">Copyrights</h2>
+                            <div class="link-widget">
+                                <ul>
+                                    <li><a href="{% url 'home' %}">Home</a></li>
+                                    <li><a href="{% url 'theLastpost' %}">The last post</a></li>
+                                    <li><a href="{% url 'contact' %}">Contact us</li>
+                                </ul>
+                            </div><!-- end link-widget -->
+                        </div><!-- end widget -->
+                    </div><!-- end col -->
+                </div>
 
-                            <div class="newsletter-widget text-left">
-                                <form class="form-inline">
-                                    <input type="text" class="form-control" placeholder="Enter your email address">
-                                    <button type="submit" class="btn btn-primary">SUBMIT</button>
-                                </form>
-                            </div><!-- end newsletter -->
-                        </div><!-- end footer-text -->
-                    </div><!-- end widget -->
-                </div><!-- end col -->
 
-                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                    <div class="widget">
-                        <h2 class="widget-title">Popular Categories</h2>
-                        <div class="link-widget">
-                            {% for s in category %}
-                            <ul>
-                                <li><a href="{% url 'post_list' s.slug %}">{{s.name}} <span>(21)</span></a></li>
+            </div><!-- end container -->
+        </footer>
 
-                            </ul>
-                            {% endfor %}
-                        </div><!-- end link-widget -->
-                    </div><!-- end widget -->
-                </div><!-- end col -->
-
-                <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                    <div class="widget">
-                        <h2 class="widget-title">Copyrights</h2>
-                        <div class="link-widget">
-                            <ul>
-                                <li><a href="#">About us</a></li>
-                                <li><a href="#">Advertising</a></li>
-                                <li><a href="#">Write for us</a></li>
-                                <li><a href="#">Trademark</a></li>
-                                <li><a href="#">License & Help</a></li>
-                            </ul>
-                        </div><!-- end link-widget -->
-                    </div><!-- end widget -->
-                </div><!-- end col -->
-            </div>
-
-          
-        </div><!-- end container -->
-    </footer>
-
-    <!-- Core JavaScript
+        <!-- Core JavaScript
     ================================================== -->
-    <script src="{% static 'js/jquery.min.js'%}"></script>
-    <script src="{% static 'js/tether.min.js'%}"></script>
-    <script src="{% static 'js/bootstrap.min.js'%}"></script>
-    <script src="{% static 'js/custom.js'%}"></script>
+        <script src="{% static 'js/jquery.min.js'%}"></script>
+        <script src="{% static 'js/tether.min.js'%}"></script>
+        <script src="{% static 'js/bootstrap.min.js'%}"></script>
+        <script src="{% static 'js/custom.js'%}"></script>
 
 </body>
 
