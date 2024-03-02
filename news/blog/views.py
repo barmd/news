@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView,DetailView
 from django.views.generic import TemplateView
 from blog.forms import ContactForm
-from blog.models import Post, HitCount
+from blog.models import Post, HitCount ,Category
 from django.http import HttpResponse
 from .forms import PostSearchForm
 from django.db import models
@@ -106,27 +106,3 @@ def post_search(request):
     }
 
     return render(request, 'blog/post_search.html', context)
-
- 
-
-def post_list(request, category=None):
-    # Get unique categories from the database
-    categories = Post.objects.values_list('category__name', flat=True).distinct()
-
-    if category:
-        posts = Post.objects.filter(category__name=category)
-    else:
-        posts = Post.objects.all()
-
-    context = {
-        'posts': posts,
-        'selected_category': category,
-        'categories': categories,
-    }
-
-    if request.is_ajax():
-        # If the request is AJAX, return the posts data as JSON
-        return JsonResponse({'html': render_to_string('posts/posts_list.html', context)})
-    else:
-        # If it's a regular request, render the template
-        return render(request, 'posts/posts_list.html', context)

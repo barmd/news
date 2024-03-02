@@ -74,17 +74,6 @@ class Post(models.Model):
     def hit_count(self):
         return HitCount.objects.filter(post_id=self.id).count()
     
-    def save(self, *args, **kwargs):
-        # If the user is not set, set it to the current user
-        if not self.user_id:
-            # Assuming you are using this code within a view where `request` is available
-            user = getattr(self, 'user', None)
-            if user is None:
-                raise ValueError("User must be set before saving the Post.")
-            
-            self.user = user
-
-        super().save(*args, **kwargs)
 
 class HitCount(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
